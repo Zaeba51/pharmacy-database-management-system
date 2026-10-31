@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Pharmacy Management System{% endblock %}</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .sidebar {
+            width: 230px;
+            height: 100vh;
+            position: fixed;
+            background: #087f8c;
+            color: white;
+            padding: 25px 15px;
+        }
+
+        .sidebar h2 { font-size: 21px; }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 13px;
+            margin: 6px 0;
+            border-radius: 6px;
+        }
+
+        .sidebar a:hover { background: #06616b; }
+
+        
+.main {
+    margin-left: 230px;
+    padding: 28px;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .main {
+        margin-left: 0;
+        padding: 16px;
+    }
+}
+
+
+        .card, section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px #0001;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+        }
+
+        .number {
+            font-size: 28px;
+            color: #087f8c;
+            font-weight: bold;
+        }
+
+        input, select, button {
+            padding: 10px;
+            margin: 5px 3px;
+            border: 1px solid #cbd5e1;
+            border-radius: 5px;
+        }
+
+        button {
+            background: #087f8c;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+
+        th, td {
+            padding: 11px 8px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th { background: #e6f4f4; }
+
+        .table-wrap { overflow-x: auto; }
+        .message { color: #087f8c; font-weight: bold; }
+        .alert, .low { color: #b91c1c; font-weight: bold; }
+
+        
+.alert-message {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 10;
+    background-color: #fff3cd;
+    color: #664d03;
+    border: 1px solid #ffecb5;
+    padding: 14px 18px;
+    margin: 15px 0;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+@media (max-width: 700px) {
+    .sidebar {
+        width: 160px;
+        padding: 12px 8px;
+    }
+
+    .main {
+        margin-left: 160px;
+        padding: 12px;
+    }
+}
+
+    </style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <h2>💊 Pharmacy</h2>
+        <p>Management System</p>
+        <hr>
+        <a href="{{ url_for('home') }}">🏠 Dashboard</a>
+        <a href="{{ url_for('medicines_page') }}">💊 Medicines</a>
+        <a href="{{ url_for('prescriptions_page') }}">📝 Prescriptions</a>
+        <a href="{{ url_for('stock_page') }}">📦 Stock Management</a>
+        <a href="{{ url_for('customers_page') }}">👥 Customers</a>
+        <a href="{{ url_for('suppliers_page') }}">🚚 Suppliers</a>
+        <a href="{{ url_for('purchases_page') }}">🧾 Purchases</a>
+    </aside>
+
+    
+<main class="main">
+    {% if request.args.get('message') %}
+        <div class="alert-message">
+            {{ request.args.get('message') }}
+        </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+</main>
+
+</body>
+</html>

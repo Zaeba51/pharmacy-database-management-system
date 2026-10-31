@@ -1,0 +1,57 @@
+
+{% extends "base.html" %}
+
+{% block title %}Stock Management | Pharmacy{% endblock %}
+
+{% block content %}
+<h1>Stock Management</h1>
+
+<section>
+    <h2>Stock Overview</h2>
+
+    {% if low_count > 0 %}
+        <p class="alert">
+            Attention: {{ low_count }} medicine(s) need restocking.
+        </p>
+    {% else %}
+        <p class="message">All medicines are above their reorder levels.</p>
+    {% endif %}
+
+    <div class="table-wrap">
+        <table>
+            <tr>
+                <th>Medicine</th>
+                <th>Quantity</th>
+                <th>Reorder Level</th>
+                <th>Status</th>
+                <th>Update Stock</th>
+            </tr>
+
+            {% for s in stock_items %}
+            <tr>
+                <td>{{ s[0] }}</td>
+                <td>{{ s[1] }}</td>
+                <td>{{ s[2] }}</td>
+
+                <td>
+                    {% if s[1] <= s[2] %}
+                        <span class="low">Restock Needed</span>
+                    {% else %}
+                        In Stock
+                    {% endif %}
+                </td>
+
+                <td>
+                    <form method="POST"
+                          action="{{ url_for('update_stock', mid=s[3]) }}">
+                        <input type="number" name="quantity" min="0"
+                               placeholder="New quantity" required>
+                        <button type="submit">Update</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</section>
+{% endblock %}

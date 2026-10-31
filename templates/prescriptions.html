@@ -1,0 +1,105 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<h1>📝 Prescriptions</h1>
+<p>Manage prescriptions and prescribed medicines.</p>
+
+<h2>Add Prescription</h2>
+
+<form method="POST" action="{{ url_for('add_prescription') }}">
+    <label>Customer</label>
+    <select name="cust_id" required>
+        <option value="">Select Customer</option>
+        {% for c in customers_list %}
+        <option value="{{ c[0] }}">{{ c[1] }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Date</label>
+    <input type="date" name="date" required>
+
+    <label>Doctor's Name</label>
+    <input name="doctor" placeholder="Doctor's name" required>
+
+    <button type="submit">Save Prescription</button>
+</form>
+
+<h2>Add Medicine to Prescription</h2>
+
+<form method="POST" action="{{ url_for('add_prescription_item') }}">
+    <label>Prescription</label>
+    <select name="pres_id" required>
+        <option value="">Select Prescription</option>
+        {% for p in prescriptions %}
+        <option value="{{ p[0] }}">
+            ID {{ p[0] }} - {{ p[3] }} ({{ p[1] }})
+        </option>
+        {% endfor %}
+    </select>
+
+    <label>Medicine</label>
+    <select name="medicine" required>
+        <option value="">Select Medicine</option>
+        {% for m in medicine_options %}
+        <option value="{{ m[0] }}">{{ m[1] }}</option>
+        {% endfor %}
+    </select>
+
+    <input name="dosage" placeholder="Dosage (e.g. 1 tablet twice daily)" required>
+    <input name="duration" placeholder="Duration (e.g. 5 days)" required>
+    <input type="number" name="quantity" placeholder="Quantity" min="1" required>
+
+    <button type="submit">Add Medicine</button>
+</form>
+
+<h2>Prescription Records</h2>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Date</th>
+        <th>Doctor</th>
+        <th>Customer</th>
+        <th>Action</th>
+    </tr>
+
+    {% for p in prescriptions %}
+    <tr>
+        <td>{{ p[0] }}</td>
+        <td>{{ p[1] }}</td>
+        <td>{{ p[2] }}</td>
+        <td>{{ p[3] }}</td>
+        <td>
+            <form method="POST"
+                  action="{{ url_for('delete_prescription', pres_id=p[0]) }}"
+                  onsubmit="return confirm('Delete this prescription and its items?')">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>Prescribed Medicines</h2>
+
+<table>
+    <tr>
+        <th>Prescription ID</th>
+        <th>Medicine</th>
+        <th>Dosage</th>
+        <th>Duration</th>
+        <th>Quantity</th>
+    </tr>
+    {% for item in prescription_items %}
+    <tr>
+        <td>{{ item[0] }}</td>
+        <td>{{ item[1] }}</td>
+        <td>{{ item[2] }}</td>
+        <td>{{ item[3] }}</td>
+        <td>{{ item[4] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

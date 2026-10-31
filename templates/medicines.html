@@ -1,0 +1,77 @@
+
+{% extends "base.html" %}
+
+{% block title %}Medicines | Pharmacy{% endblock %}
+
+{% block content %}
+<h1>Medicine Management</h1>
+
+<section>
+    <h2>Search Medicines</h2>
+    <form method="GET" action="{{ url_for('medicines_page') }}">
+        <input name="search" placeholder="Medicine name"
+               value="{{ search }}">
+        <button type="submit">Search</button>
+        <a href="{{ url_for('medicines_page') }}">Show All</a>
+    </form>
+</section>
+
+<section>
+    <h2>Add New Medicine</h2>
+    <form method="POST" action="{{ url_for('add_medicine') }}">
+        <input name="name" placeholder="Medicine name" required>
+        <input name="category" placeholder="Category" required>
+        <input name="expiry" type="date" required>
+        <input name="price" type="number" min="0.01" step="0.01"
+               placeholder="Price" required>
+
+        <select name="supplier" required>
+            <option value="">Select supplier</option>
+            {% for s in suppliers %}
+            <option value="{{ s[0] }}">{{ s[1] }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Add Medicine</button>
+    </form>
+</section>
+
+<section>
+    <h2>Medicine Inventory</h2>
+    <div class="table-wrap">
+        <table>
+            <tr>
+                <th>ID</th><th>Name</th><th>Category</th>
+                <th>Expiry</th><th>Price (Rs.)</th>
+                <th>Update Price</th><th>Delete</th>
+            </tr>
+
+            {% for m in medicines %}
+            <tr>
+                <td>{{ m[0] }}</td>
+                <td>{{ m[1] }}</td>
+                <td>{{ m[2] }}</td>
+                <td>{{ m[3] }}</td>
+                <td>{{ m[4] }}</td>
+                <td>
+                    <form method="POST"
+                          action="{{ url_for('update_price', mid=m[0]) }}">
+                        <input type="number" name="price" min="0.01"
+                               step="0.01" placeholder="New price" required>
+                        <button type="submit">Update</button>
+                    </form>
+                </td>
+                <td>
+                    <form method="POST"
+                          action="{{ url_for('delete_medicine', mid=m[0]) }}"
+                          onsubmit="return confirm('Delete this medicine?');">
+                        <button type="submit"
+                                style="background:#dc2626">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</section>
+{% endblock %}

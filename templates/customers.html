@@ -1,0 +1,65 @@
+
+{% extends "base.html" %}
+
+{% block title %}Customers | Pharmacy{% endblock %}
+
+{% block content %}
+<h1>Customer Management</h1>
+
+<section>
+    <h2>Add New Customer</h2>
+
+    <form method="POST" action="{{ url_for('add_customer') }}">
+        <input type="text" name="name"
+               placeholder="Customer name" required>
+
+        <input
+    type="tel"
+    name="phone"
+    placeholder="10-digit mobile number"
+    pattern="[6-9][0-9]{9}"
+    maxlength="10"
+    minlength="10"
+    title="Enter a valid 10-digit Indian mobile number"
+    required
+>
+
+        <input type="text" name="address"
+               placeholder="Address" required>
+
+        <button type="submit">Add Customer</button>
+    </form>
+</section>
+
+<section>
+    <h2>Customer List</h2>
+
+    <div class="table-wrap">
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Action</th>
+            </tr>
+
+            {% for c in customers_list %}
+            <tr>
+                <td>{{ c[0] }}</td>
+                <td>{{ c[1] }}</td>
+                <td>{{ c[2] }}</td>
+                <td>{{ c[3] }}</td>
+                <td>
+        <form method="POST"
+              action="{{ url_for('delete_customer', cust_id=c[0]) }}"
+              onsubmit="return confirm('Delete this customer?')">
+            <button type="submit">Delete</button>
+        </form>
+    </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</section>
+{% endblock %}

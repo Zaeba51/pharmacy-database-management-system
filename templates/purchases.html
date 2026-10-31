@@ -1,0 +1,72 @@
+
+{% extends "base.html" %}
+
+{% block title %}Purchases | Pharmacy{% endblock %}
+
+{% block content %}
+<h1>Purchase Management</h1>
+
+<section>
+    <h2>New Purchase</h2>
+
+    <form method="POST" action="{{ url_for('add_purchase') }}">
+        <label>Customer:</label>
+        <select name="customer" required>
+            <option value="">Select customer</option>
+            {% for c in customers_list %}
+            <option value="{{ c[0] }}">{{ c[1] }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Pharmacist:</label>
+        <select name="pharmacist" required>
+            <option value="">Select pharmacist</option>
+            {% for ph in pharmacists_list %}
+            <option value="{{ ph[0] }}">{{ ph[1] }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Medicine:</label>
+        <select name="medicine" required>
+            <option value="">Select medicine</option>
+            {% for m in medicine_options %}
+            <option value="{{ m[0] }}">
+                {{ m[1] }} - Rs. {{ m[2] }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <label>Quantity:</label>
+        <input type="number" name="quantity" min="1"
+               placeholder="Quantity" required>
+
+        <button type="submit">Save Purchase</button>
+    </form>
+</section>
+
+<section>
+    <h2>Purchase Records</h2>
+
+    <div class="table-wrap">
+        <table>
+            <tr>
+                <th>Purchase ID</th>
+                <th>Date</th>
+                <th>Customer</th>
+                <th>Pharmacist</th>
+                <th>Bill Amount (Rs.)</th>
+            </tr>
+
+            {% for p in purchases %}
+            <tr>
+                <td>{{ p[0] }}</td>
+                <td>{{ p[1] }}</td>
+                <td>{{ p[2] }}</td>
+                <td>{{ p[3] }}</td>
+                <td>{{ p[4] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</section>
+{% endblock %}

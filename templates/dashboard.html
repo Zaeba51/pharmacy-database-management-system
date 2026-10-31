@@ -1,0 +1,45 @@
+
+{% extends "base.html" %}
+
+{% block title %}Dashboard | Pharmacy{% endblock %}
+
+{% block content %}
+<h1>Dashboard</h1>
+<p>Welcome to your Pharmacy Management System.</p>
+
+<div class="cards">
+    <div class="card">
+        <p>Total Medicines</p>
+        <div class="number">{{ total }}</div>
+    </div>
+
+    <div class="card">
+        <p>Total Stock Units</p>
+        <div class="number">{{ stock_total }}</div>
+    </div>
+
+    <div class="card">
+        <p>Total Customers</p>
+        <div class="number">{{ customers }}</div>
+    </div>
+
+    <div class="card">
+        <p>Low Stock Medicines</p>
+        <div class="number">{{ low_count }}</div>
+    </div>
+</div>
+
+<section>
+    <h2>Stock Overview</h2>
+
+    {% if low_count > 0 %}
+        <p class="alert">
+            Attention: {{ low_count }} medicine(s) need restocking.
+        </p>
+    {% else %}
+        <p class="message">
+            All medicines are above their reorder levels.
+        </p>
+    {% endif %}
+</section>
+{% endblock %}

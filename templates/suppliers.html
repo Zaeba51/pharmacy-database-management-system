@@ -1,0 +1,56 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Suppliers</h1>
+<p>Manage pharmacy suppliers.</p>
+
+<h2>Add Supplier</h2>
+
+<form method="POST" action="{{ url_for('add_supplier') }}">
+    <input name="name" placeholder="Supplier name" required>
+
+    <input
+        type="tel"
+        name="phone"
+        placeholder="10-digit mobile number"
+        pattern="[6-9][0-9]{9}"
+        maxlength="10"
+        minlength="10"
+        title="Enter a valid 10-digit Indian mobile number"
+        required
+    >
+
+    <input name="address" placeholder="Address" required>
+
+    <button type="submit">Add Supplier</button>
+</form>
+
+<h2>Supplier List</h2>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Action</th>
+    </tr>
+
+    {% for s in suppliers %}
+    <tr>
+        <td>{{ s[0] }}</td>
+        <td>{{ s[1] }}</td>
+        <td>{{ s[2] }}</td>
+        <td>{{ s[3] }}</td>
+        <td>
+    <form method="POST"
+          action="{{ url_for('delete_supplier', sup_id=s[0]) }}"
+          onsubmit="return confirm('Delete this supplier?')">
+        <button type="submit">Delete</button>
+    </form>
+</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
